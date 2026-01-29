@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ghtransport.inventory.infrastructure.persistence.mapper.InventoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.ghtransport.inventory.infrastructure.persistence.po.InventoryPO">
+        <id column="id" property="id"/>
+        <result column="sku_code" property="skuCode"/>
+        <result column="product_name" property="productName"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="quantity" property="quantity"/>
+        <result column="reserved_quantity" property="reservedQuantity"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="status" property="status"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sku_code, product_name, warehouse_id, quantity, reserved_quantity, unit_price, status, created_at, updated_at
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="false">
+        INSERT INTO inventory (
+            id, sku_code, product_name, warehouse_id, quantity, reserved_quantity, unit_price, status, created_at, updated_at
+        ) VALUES (
+            #{po.id}, #{po.skuCode}, #{po.productName}, #{po.warehouseId}, #{po.quantity},
+            #{po.reservedQuantity}, #{po.unitPrice}, #{po.status}, #{po.createdAt}, #{po.updatedAt}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE inventory
+        <set>
+            <if test="po.skuCode != null">sku_code = #{po.skuCode},</if>
+            <if test="po.productName != null">product_name = #{po.productName},</if>
+            <if test="po.quantity != null">quantity = #{po.quantity},</if>
+            <if test="po.reservedQuantity != null">reserved_quantity = #{po.reservedQuantity},</if>
+            <if test="po.unitPrice != null">unit_price = #{po.unitPrice},</if>
+            <if test="po.status != null">status = #{po.status},</if>
+            <if test="po.updatedAt != null">updated_at = #{po.updatedAt}</if>
+        </set>
+        WHERE id = #{po.id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM inventory WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM inventory
+        WHERE id = #{id}
+    </select>
+
+    <select id="findBySkuCode" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM inventory
+        WHERE sku_code = #{skuCode}
+        LIMIT 1
+    </select>
+
+    <select id="findByWarehouseId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM inventory
+        WHERE warehouse_id = #{warehouseId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findByWarehouseIdPaged" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM inventory
+        WHERE warehouse_id = #{warehouseId}
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{pageSize} * (#{pageNum} - 1)
+    </select>
+
+    <select id="findByStatus" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM inventory
+        WHERE status = #{status}
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{pageSize} * (#{pageNum} - 1)
+    </select>
+
+    <select id="search" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM inventory
+        WHERE sku_code LIKE CONCAT('%', #{keyword}, '%')
+           OR product_name LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{pageSize} * (#{pageNum} - 1)
+    </select>
+
+    <select id="existsBySkuCode" resultType="boolean">
+        SELECT COUNT(1) > 0 FROM inventory WHERE sku_code = #{skuCode}
+    </select>
+
+    <select id="countByWarehouseId" resultType="int">
+        SELECT COUNT(1) FROM inventory WHERE warehouse_id = #{warehouseId}
+    </select>
+
+    <select id="countByStatus" resultType="int">
+        SELECT COUNT(1) FROM inventory WHERE status = #{status}
+    </select>
+
+    <select id="countSearch" resultType="int">
+        SELECT COUNT(1) FROM inventory
+        WHERE sku_code LIKE CONCAT('%', #{keyword}, '%')
+           OR product_name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+</mapper>

@@ -1,0 +1,120 @@
+# Web网关配置
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gh-transport-gateway-web
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:dev}
+        group: DEFAULT_GROUP
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:dev}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+
+    gateway:
+      routes:
+        # 认证服务
+        - id: auth-service
+          uri: lb://gh-transport-auth
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - StripPrefix=2
+
+        # 订单服务
+        - id: order-service
+          uri: lb://gh-transport-order
+          predicates:
+            - Path=/api/v1/orders/**,/api/v1/order/**
+          filters:
+            - StripPrefix=2
+
+        # 调度服务
+        - id: dispatch-service
+          uri: lb://gh-transport-dispatch
+          predicates:
+            - Path=/api/v1/dispatch/**,/api/v1/dispatchs/**
+          filters:
+            - StripPrefix=2
+
+        # 运输服务
+        - id: transport-service
+          uri: lb://gh-transport-transport
+          predicates:
+            - Path=/api/v1/transport/**,/api/v1/transports/**
+          filters:
+            - StripPrefix=2
+
+        # 客户服务
+        - id: customer-service
+          uri: lb://gh-transport-customer
+          predicates:
+            - Path=/api/v1/customer/**,/api/v1/customers/**
+          filters:
+            - StripPrefix=2
+
+        # 库存服务
+        - id: inventory-service
+          uri: lb://gh-transport-inventory
+          predicates:
+            - Path=/api/v1/inventory/**,/api/v1/inventorys/**
+          filters:
+            - StripPrefix=2
+
+      # 全局跨域配置
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 3600
+
+      # 默认过滤器
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+# 日志配置
+logging:
+  level:
+    com.ghtransport: DEBUG
+    org.springframework.cloud.gateway: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

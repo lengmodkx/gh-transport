@@ -1,0 +1,12 @@
+# Bootstrap配置
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:dev}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        shared-configs:
+          - dataId: common-${spring.profiles.active}.yaml
+            group: DEFAULT_GROUP

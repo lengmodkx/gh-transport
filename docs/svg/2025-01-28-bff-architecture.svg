@@ -1,0 +1,269 @@
+<svg width="1000" height="1450" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 企业蓝色系 -->
+    <style>
+      .title { font-family: "Microsoft YaHei", "SimHei", sans-serif; font-weight: bold; }
+      .subtitle { font-family: "Microsoft YaHei", "SimHei", sans-serif; }
+      .label { font-family: "Microsoft YaHei", "SimHei", sans-serif; font-size: 12px; }
+      .small { font-family: Arial, sans-serif; font-size: 10px; }
+      .small-cn { font-family: "Microsoft YaHei", "SimHei", sans-serif; font-size: 10px; fill: #34495E; }
+    </style>
+    <!-- PostgreSQL绿色 -->
+    <linearGradient id="pgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3C8DBC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2C5F8A;stop-opacity:1" />
+    </linearGradient>
+    <!-- MongoDB绿色 -->
+    <linearGradient id="mongoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#13AA52;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D7A3E;stop-opacity:1" />
+    </linearGradient>
+    <!-- Redis橙红色 -->
+    <linearGradient id="redisGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#D82C20;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A82017;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1000" height="1450" fill="#FFFFFF" />
+
+  <!-- 标题区域 -->
+  <rect x="0" y="0" width="1000" height="75" fill="#1E3A5F" />
+  <text x="500" y="38" text-anchor="middle" fill="#FFFFFF" class="title" font-size="28">物流ERP系统架构图</text>
+  <text x="500" y="62" text-anchor="middle" fill="#A0B4C4" class="subtitle" font-size="14">DDD + BFF + 事件驱动 | PostgreSQL + MongoDB</text>
+
+  <!-- 分隔线 -->
+  <line x1="50" y1="85" x2="950" y2="85" stroke="#1E3A5F" stroke-width="2" />
+
+  <!-- Layer 1: 客户端层 -->
+  <rect x="50" y="100" width="900" height="135" fill="#F5F7FA" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="70" y="125" fill="#2C3E50" class="title" font-size="16">客户端层</text>
+  <text x="70" y="145" fill="#5D6D7E" class="subtitle" font-size="11">Client Layer - 多端接入</text>
+
+  <!-- 客户端卡片 -->
+  <rect x="70" y="160" width="180" height="60" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="160" y="183" text-anchor="middle" fill="#1E3A5F" class="title" font-size="13">Web App</text>
+  <text x="160" y="203" text-anchor="middle" fill="#7F8C8D" class="small">Vue / React</text>
+
+  <rect x="265" y="160" width="180" height="60" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="355" y="183" text-anchor="middle" fill="#1E3A5F" class="title" font-size="13">Mobile App</text>
+  <text x="355" y="203" text-anchor="middle" fill="#7F8C8D" class="small">iOS / Android</text>
+
+  <rect x="460" y="160" width="180" height="60" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="550" y="183" text-anchor="middle" fill="#1E3A5F" class="title" font-size="13">Mini Program</text>
+  <text x="550" y="203" text-anchor="middle" fill="#7F8C8D" class="small">微信 / 支付宝</text>
+
+  <rect x="655" y="160" width="180" height="60" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="745" y="183" text-anchor="middle" fill="#1E3A5F" class="title" font-size="13">Admin Portal</text>
+  <text x="745" y="203" text-anchor="middle" fill="#7F8C8D" class="small">后台管理系统</text>
+
+  <!-- 下箭头1 -->
+  <line x1="500" y1="245" x2="500" y2="270" stroke="#1E3A5F" stroke-width="2"/>
+  <polygon points="495,265 500,275 505,265" fill="#1E3A5F"/>
+  <text x="530" y="275" fill="#1E3A5F" class="small">HTTP/HTTPS / WebSocket</text>
+
+  <!-- Layer 2: BFF层 -->
+  <rect x="50" y="285" width="900" height="200" fill="#F0F4F8" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="70" y="310" fill="#2C3E50" class="title" font-size="16">BFF层</text>
+  <text x="70" y="330" fill="#5D6D7E" class="subtitle" font-size="11">Backend For Frontend - 为每端定制API</text>
+
+  <!-- BFF卡片 -->
+  <rect x="70" y="345" width="270" height="125" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="205" y="368" text-anchor="middle" fill="#1E3A5F" class="title" font-size="14">Web BFF</text>
+  <line x1="90" y1="380" x2="380" y2="380" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="90" y="398" fill="#34495E" class="small-cn">- 完整数据响应</text>
+  <text x="90" y="415" fill="#34495E" class="small-cn">- 复杂查询筛选</text>
+  <text x="90" y="432" fill="#34495E" class="small-cn">- 大屏数据聚合</text>
+  <text x="90" y="449" fill="#7F8C8D" class="small">Spring Cloud Gateway</text>
+
+  <rect x="365" y="345" width="270" height="125" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="500" y="368" text-anchor="middle" fill="#1E3A5F" class="title" font-size="14">Mobile BFF</text>
+  <line x1="385" y1="380" x2="675" y2="380" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="385" y="398" fill="#34495E" class="small-cn">- 精简数据响应</text>
+  <text x="385" y="415" fill="#34495E" class="small-cn">- 离线缓存支持</text>
+  <text x="385" y="432" fill="#34495E" class="small-cn">- 弱网适配</text>
+  <text x="385" y="449" fill="#7F8C8D" class="small">Spring Cloud Gateway</text>
+
+  <rect x="660" y="345" width="270" height="125" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="795" y="368" text-anchor="middle" fill="#1E3A5F" class="title" font-size="14">Admin BFF</text>
+  <line x1="680" y1="380" x2="970" y2="380" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="680" y="398" fill="#34495E" class="small-cn">- 完整业务数据</text>
+  <text x="680" y="415" fill="#34495E" class="small-cn">- 批量操作接口</text>
+  <text x="680" y="432" fill="#34495E" class="small-cn">- 复杂报表导出</text>
+  <text x="680" y="449" fill="#7F8C8D" class="small">Spring Cloud Gateway</text>
+
+  <!-- 下箭头2 -->
+  <line x1="500" y1="495" x2="500" y2="520" stroke="#1E3A5F" stroke-width="2"/>
+  <polygon points="495,515 500,525 505,515" fill="#1E3A5F"/>
+  <text x="530" y="525" fill="#1E3A5F" class="small">REST API / GraphQL</text>
+
+  <!-- Layer 3: 服务网关层 -->
+  <rect x="50" y="535" width="900" height="150" fill="#E8F0F5" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="70" y="560" fill="#2C3E50" class="title" font-size="16">服务网关层</text>
+  <text x="70" y="580" fill="#5D6D7E" class="subtitle" font-size="11">Service Gateway - 服务治理</text>
+
+  <!-- 网关组件 -->
+  <rect x="70" y="595" width="160" height="75" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="150" y="618" text-anchor="middle" fill="#1E3A5F" class="title" font-size="11">服务注册发现</text>
+  <text x="150" y="638" text-anchor="middle" fill="#7F8C8D" class="small">Nacos</text>
+  <text x="150" y="658" text-anchor="middle" fill="#5D6D7E" class="small" font-size="9">心跳检测</text>
+
+  <rect x="245" y="595" width="160" height="75" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="325" y="618" text-anchor="middle" fill="#1E3A5F" class="title" font-size="11">负载均衡</text>
+  <text x="325" y="638" text-anchor="middle" fill="#7F8C8D" class="small">Spring Cloud LoadBalancer</text>
+  <text x="325" y="658" text-anchor="middle" fill="#5D6D7E" class="small" font-size="9">轮询 / 权重</text>
+
+  <rect x="420" y="595" width="160" height="75" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="500" y="618" text-anchor="middle" fill="#1E3A5F" class="title" font-size="11">限流熔断</text>
+  <text x="500" y="638" text-anchor="middle" fill="#7F8C8D" class="small">Sentinel</text>
+  <text x="500" y="658" text-anchor="middle" fill="#5D6D7E" class="small" font-size="9">降级 / 限流</text>
+
+  <rect x="595" y="595" width="160" height="75" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="675" y="618" text-anchor="middle" fill="#1E3A5F" class="title" font-size="11">统一认证</text>
+  <text x="675" y="638" text-anchor="middle" fill="#7F8C8D" class="small">JWT / OAuth2</text>
+  <text x="675" y="658" text-anchor="middle" fill="#5D6D7E" class="small" font-size="9">鉴权</text>
+
+  <rect x="770" y="595" width="145" height="75" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="842" y="618" text-anchor="middle" fill="#1E3A5F" class="title" font-size="11">配置中心</text>
+  <text x="842" y="638" text-anchor="middle" fill="#7F8C8D" class="small">Nacos</text>
+  <text x="842" y="658" text-anchor="middle" fill="#5D6D7E" class="small" font-size="9">动态配置</text>
+
+  <!-- 下箭头3 -->
+  <line x1="500" y1="700" x2="500" y2="725" stroke="#1E3A5F" stroke-width="2"/>
+  <polygon points="495,720 500,730 505,720" fill="#1E3A5F"/>
+  <text x="530" y="730" fill="#1E3A5F" class="small">RPC调用</text>
+
+  <!-- Layer 4: 限界上下文 -->
+  <rect x="50" y="740" width="900" height="340" fill="#F8F9FA" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="70" y="765" fill="#2C3E50" class="title" font-size="16">领域服务层</text>
+  <text x="70" y="785" fill="#5D6D7E" class="subtitle" font-size="11">Domain Services Layer - 各限界上下文 (Bounded Context)</text>
+
+  <!-- 核心BC -->
+  <rect x="70" y="805" width="270" height="200" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="2"/>
+  <rect x="70" y="805" width="270" height="32" fill="#1E3A5F"/>
+  <text x="205" y="827" text-anchor="middle" fill="#FFFFFF" class="title" font-size="13">Order BC</text>
+  <text x="205" y="847" text-anchor="middle" fill="#5D6D7E" class="small">订单限界上下文</text>
+
+  <rect x="85" y="857" width="240" height="28" fill="#E8F0F5" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="205" y="875" text-anchor="middle" fill="#1E3A5F" class="label">Order Aggregate (聚合根)</text>
+
+  <rect x="85" y="890" width="240" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="205" y="906" text-anchor="middle" fill="#34495E" class="small">Application Service</text>
+
+  <rect x="85" y="918" width="240" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="205" y="934" text-anchor="middle" fill="#34495E" class="small">Domain Service</text>
+
+  <rect x="85" y="946" width="240" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="205" y="962" text-anchor="middle" fill="#34495E" class="small">Repository (PostgreSQL)</text>
+
+  <rect x="85" y="975" width="240" height="24" fill="#F5F7FA" stroke="#B0C4DE" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="205" y="991" text-anchor="middle" fill="#5D6D7E" class="small">Domain Events</text>
+
+  <!-- Dispatch BC -->
+  <rect x="365" y="805" width="270" height="200" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="2"/>
+  <rect x="365" y="805" width="270" height="32" fill="#1E3A5F"/>
+  <text x="500" y="827" text-anchor="middle" fill="#FFFFFF" class="title" font-size="13">Dispatch BC</text>
+  <text x="500" y="847" text-anchor="middle" fill="#5D6D7E" class="small">调度限界上下文</text>
+
+  <rect x="380" y="857" width="240" height="28" fill="#E8F0F5" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="500" y="875" text-anchor="middle" fill="#1E3A5F" class="label">Dispatch Aggregate</text>
+
+  <rect x="380" y="890" width="240" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="500" y="906" text-anchor="middle" fill="#34495E" class="small">Application Service</text>
+
+  <rect x="380" y="918" width="240" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="500" y="934" text-anchor="middle" fill="#34495E" class="small">Domain Service</text>
+
+  <rect x="380" y="946" width="240" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="500" y="962" text-anchor="middle" fill="#34495E" class="small">Repository (PostgreSQL)</text>
+
+  <rect x="380" y="975" width="240" height="24" fill="#F5F7FA" stroke="#B0C4DE" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="500" y="991" text-anchor="middle" fill="#5D6D7E" class="small">Domain Events</text>
+
+  <!-- Transport BC -->
+  <rect x="660" y="805" width="240" height="200" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="2"/>
+  <rect x="660" y="805" width="240" height="32" fill="#1E3A5F"/>
+  <text x="780" y="827" text-anchor="middle" fill="#FFFFFF" class="title" font-size="13">Transport BC</text>
+  <text x="780" y="847" text-anchor="middle" fill="#5D6D7E" class="small">运输限界上下文</text>
+
+  <rect x="675" y="857" width="210" height="28" fill="#E8F0F5" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="780" y="875" text-anchor="middle" fill="#1E3A5F" class="label">Vehicle / Driver</text>
+
+  <rect x="675" y="890" width="210" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="780" y="906" text-anchor="middle" fill="#34495E" class="small">Application Service</text>
+
+  <rect x="675" y="918" width="210" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="780" y="934" text-anchor="middle" fill="#34495E" class="small">Domain Service</text>
+
+  <rect x="675" y="946" width="210" height="24" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="780" y="962" text-anchor="middle" fill="#34495E" class="small">Repository (MongoDB)</text>
+
+  <rect x="675" y="975" width="210" height="24" fill="#F5F7FA" stroke="#B0C4DE" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="780" y="991" text-anchor="middle" fill="#5D6D7E" class="small">Domain Events</text>
+
+  <!-- 下方三个小BC -->
+  <rect x="70" y="1015" width="175" height="50" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="157" y="1037" text-anchor="middle" fill="#1E3A5F" class="label">Customer BC</text>
+  <text x="157" y="1055" text-anchor="middle" fill="#7F8C8D" class="small">客户 (PostgreSQL)</text>
+
+  <rect x="260" y="1015" width="175" height="50" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="347" y="1037" text-anchor="middle" fill="#1E3A5F" class="label">Inventory BC</text>
+  <text x="347" y="1055" text-anchor="middle" fill="#7F8C8D" class="small">库存 (PostgreSQL)</text>
+
+  <rect x="450" y="1015" width="175" height="50" fill="#FFFFFF" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="537" y="1037" text-anchor="middle" fill="#1E3A5F" class="label">Auth BC</text>
+  <text x="537" y="1055" text-anchor="middle" fill="#7F8C8D" class="small">权限 (PostgreSQL)</text>
+
+  <rect x="640" y="1015" width="260" height="50" fill="#F5F7FA" stroke="#5D6D7E" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="770" y="1037" text-anchor="middle" fill="#5D6D7E" class="label">防腐层 (ACL)</text>
+  <text x="770" y="1055" text-anchor="middle" fill="#7F8C8D" class="small">BC间同步通信</text>
+
+  <!-- 下箭头4 -->
+  <line x1="500" y1="1085" x2="500" y2="1110" stroke="#1E3A5F" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="495,1100 500,1110 505,1100" fill="#1E3A5F"/>
+  <text x="530" y="1110" fill="#1E3A5F" class="small">Domain Events</text>
+
+  <!-- Layer 5: Event Bus -->
+  <rect x="50" y="1125" width="900" height="95" fill="#E8F0F5" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="70" y="1150" fill="#2C3E50" class="title" font-size="16">事件总线</text>
+  <text x="70" y="1170" fill="#5D6D7E" class="subtitle" font-size="11">Event Bus - 异步解耦</text>
+
+  <!-- 事件总线组件 -->
+  <rect x="70" y="1180" width="240" height="35" fill="url(#redisGrad)" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="190" y="1203" text-anchor="middle" fill="#FFFFFF" class="label">Kafka (事件存储)</text>
+
+  <rect x="330" y="1180" width="240" height="35" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="450" y="1203" text-anchor="middle" fill="#1E3A5F" class="label">RocketMQ</text>
+
+  <rect x="590" y="1180" width="200" height="35" fill="#FFFFFF" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="690" y="1203" text-anchor="middle" fill="#1E3A5F" class="label">Spring Event (Dev)</text>
+
+  <!-- Layer 6: 数据存储 -->
+  <rect x="50" y="1235" width="900" height="130" fill="#FAFAFA" stroke="#B0C4DE" stroke-width="1"/>
+  <text x="70" y="1260" fill="#2C3E50" class="title" font-size="16">数据持久化层</text>
+  <text x="70" y="1280" fill="#5D6D7E" class="subtitle" font-size="11">Persistence Layer</text>
+
+  <!-- 数据库 -->
+  <rect x="70" y="1290" width="260" height="60" fill="url(#pgGrad)" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="200" y="1315" text-anchor="middle" fill="#FFFFFF" class="title" font-size="14">PostgreSQL</text>
+  <text x="200" y="1335" text-anchor="middle" fill="#FFFFFF" class="small">结构化数据 | 事务 | 关联查询</text>
+  <text x="200" y="1348" text-anchor="middle" fill="#E0E0E0" class="small">订单/调度/客户/库存/用户</text>
+
+  <rect x="355" y="1290" width="260" height="60" fill="url(#mongoGrad)" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="485" y="1315" text-anchor="middle" fill="#FFFFFF" class="title" font-size="14">MongoDB</text>
+  <text x="485" y="1335" text-anchor="middle" fill="#FFFFFF" class="small">文档数据 | 灵活Schema | 日志</text>
+  <text x="485" y="1348" text-anchor="middle" fill="#E0E0E0" class="small">运输轨迹/操作日志/审批记录</text>
+
+  <rect x="640" y="1290" width="200" height="60" fill="url(#redisGrad)" stroke="#A0B4C4" stroke-width="1"/>
+  <text x="740" y="1315" text-anchor="middle" fill="#FFFFFF" class="title" font-size="14">Redis</text>
+  <text x="740" y="1335" text-anchor="middle" fill="#FFFFFF" class="small">缓存 | 会话 | 分布式锁</text>
+  <text x="740" y="1348" text-anchor="middle" fill="#E0E0E0" class="small">Session / Cache</text>
+
+  <!-- 底部说明 -->
+  <line x1="50" y1="1375" x2="950" y2="1375" stroke="#B0C4DE" stroke-width="1"/>
+
+  <text x="500" y="1415" text-anchor="middle" fill="#34495E" class="subtitle" font-size="11">
+    BC = Bounded Context (限界上下文) | ACL = Anti-Corruption Layer (防腐层)
+  </text>
+</svg>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ghtransport.customer.infrastructure.persistence.mapper.CustomerMapper">
+
+    <resultMap id="BaseResultMap" type="com.ghtransport.customer.infrastructure.persistence.po.CustomerPO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="contact_person" property="contactPerson"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="address" property="address"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, contact_person, phone, email, address, type, status, created_at, updated_at
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="false">
+        INSERT INTO customer (
+            id, name, contact_person, phone, email, address, type, status, created_at, updated_at
+        ) VALUES (
+            #{po.id}, #{po.name}, #{po.contactPerson}, #{po.phone}, #{po.email},
+            #{po.address}, #{po.type}, #{po.status}, #{po.createdAt}, #{po.updatedAt}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE customer
+        <set>
+            <if test="po.name != null">name = #{po.name},</if>
+            <if test="po.contactPerson != null">contact_person = #{po.contactPerson},</if>
+            <if test="po.phone != null">phone = #{po.phone},</if>
+            <if test="po.email != null">email = #{po.email},</if>
+            <if test="po.address != null">address = #{po.address},</if>
+            <if test="po.type != null">type = #{po.type},</if>
+            <if test="po.status != null">status = #{po.status},</if>
+            <if test="po.updatedAt != null">updated_at = #{po.updatedAt}</if>
+        </set>
+        WHERE id = #{po.id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM customer WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE name = #{name}
+        LIMIT 1
+    </select>
+
+    <select id="findByPhone" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE phone = #{phone}
+        LIMIT 1
+    </select>
+
+    <select id="findByType" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE type = #{type}
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{pageSize} * (#{pageNum} - 1)
+    </select>
+
+    <select id="findByStatus" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE status = #{status}
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{pageSize} * (#{pageNum} - 1)
+    </select>
+
+    <select id="search" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM customer
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+           OR contact_person LIKE CONCAT('%', #{keyword}, '%')
+           OR phone LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{pageSize} * (#{pageNum} - 1)
+    </select>
+
+    <select id="existsByName" resultType="boolean">
+        SELECT COUNT(1) > 0 FROM customer WHERE name = #{name}
+    </select>
+
+    <select id="existsByPhone" resultType="boolean">
+        SELECT COUNT(1) > 0 FROM customer WHERE phone = #{phone}
+    </select>
+
+    <select id="countByType" resultType="int">
+        SELECT COUNT(1) FROM customer WHERE type = #{type}
+    </select>
+
+    <select id="countByStatus" resultType="int">
+        SELECT COUNT(1) FROM customer WHERE status = #{status}
+    </select>
+
+    <select id="countSearch" resultType="int">
+        SELECT COUNT(1) FROM customer
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+           OR contact_person LIKE CONCAT('%', #{keyword}, '%')
+           OR phone LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+</mapper>

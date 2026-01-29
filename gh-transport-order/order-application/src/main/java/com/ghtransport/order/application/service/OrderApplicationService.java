@@ -1,86 +1,144 @@
 package com.ghtransport.order.application.service;
 
-import com.ghtransport.common.domain.DomainEventPublisher;
-import com.ghtransport.common.exception.DomainException;
-import com.ghtransport.order.application.command.CancelOrderCmd;
 import com.ghtransport.order.application.command.CreateOrderCmd;
 import com.ghtransport.order.domain.aggregate.Order;
-import com.ghtransport.order.domain.entity.OrderItem;
 import com.ghtransport.order.domain.repository.OrderRepository;
-import com.ghtransport.order.domain.vo.Address;
-import com.ghtransport.order.domain.vo.Money;
-import com.ghtransport.order.domain.vo.Quantity;
-import lombok.RequiredArgsConstructor;
+import com.ghtransport.order.domain.valueobject.Address;
+import com.ghtransport.common.core.exception.BusinessException;
+import com.ghtransport.common.core.result.PageResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
+/**
+ * 订单应用服务
+ */
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class OrderApplicationService {
 
     private final OrderRepository orderRepository;
-    private final DomainEventPublisher eventPublisher;
 
-    @Transactional
-    public String createOrder(CreateOrderCmd cmd) {
-        // 构建值对象
-        Address pickupAddress = new Address(
-            cmd.getPickupProvince(), cmd.getPickupCity(),
-            cmd.getPickupDistrict(), cmd.getPickupDetail(),
-            cmd.getPickupContact(), cmd.getPickupPhone()
-        );
-
-        Address deliveryAddress = new Address(
-            cmd.getDeliveryProvince(), cmd.getDeliveryCity(),
-            cmd.getDeliveryDistrict(), cmd.getDeliveryDetail(),
-            cmd.getDeliveryContact(), cmd.getDeliveryPhone()
-        );
-
-        // 构建货物明细
-        var items = cmd.getItems().stream()
-            .map(itemCmd -> OrderItem.create(
-                itemCmd.getItemName(),
-                new Quantity(itemCmd.getQuantity()),
-                itemCmd.getWeight(),
-                itemCmd.getVolume(),
-                new Money(itemCmd.getUnitPrice())
-            ))
-            .collect(Collectors.toList());
-
-        // 创建聚合根
-        Order order = Order.create(
-            cmd.getCustomerId(),
-            items,
-            pickupAddress,
-            deliveryAddress,
-            cmd.getPickupTime(),
-            cmd.getDeliveryTime()
-        );
-
-        // 持久化
-        orderRepository.save(order);
-
-        // 发布领域事件
-        order.getDomainEvents().forEach(eventPublisher::publish);
-        order.clearDomainEvents();
-
-        return order.getId();
+    public OrderApplicationService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
-    @Transactional
-    public void cancelOrder(CancelOrderCmd cmd) {
-        Order order = orderRepository.findById(cmd.getOrderId());
-        if (order == null) {
-            throw new DomainException("订单不存在");
-        }
+    /**
+     * 创建订单
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Order createOrder(CreateOrderCmd cmd) {
+        // 构建地址
+        Address address = Address.of(
+                cmd.getProvince(), cmd.getCity(),
+                cmd.getDistrict() != null ? cmd.getDistrict() : "",
+                cmd.getDetail(), cmd.getReceiverName(), cmd.getReceiverPhone(),
+                cmd.getPostalCode() != null ? cmd.getPostalCode() : ""
+        );
 
-        order.cancel(cmd.getReason());
+        // 构建订单明细
+        List<Order.OrderItem> items = cmd.getItems().stream()
+                .map(itemCmd -> new Order.OrderItem(
+                        itemCmd.getProductId(),
+                        itemCmd.getProductName(),
+                        itemCmd.getSpecification() != null ? itemCmd.getSpecification() : "",
+                        Order.OrderItem.Money.of(itemCmd.getPrice()),
+                        Order.OrderItem.Quantity.of(Integer.parseInt(itemCmd.getQuantity()))
+                )
+                .toList();
+
+        // 创建订单
+        Order order = Order.create(cmd.getCustomerId(), address, items, cmd.getRemark());
+
+        // 保存订单
         orderRepository.save(order);
 
-        // 发布领域事件
-        order.getDomainEvents().forEach(eventPublisher::publish);
-        order.clearDomainEvents();
+        log.info("订单创建成功: {}", order.getOrderNo().getValue());
+
+        return order;
+    }
+
+    /**
+     * 获取订单详情
+     */
+    @Transactional(readOnly = true)
+    public Order getOrder(String orderId) {
+        return orderRepository.findById(Order.OrderId.of(orderId))
+                .orElseThrow(() -> new BusinessException("ORDER_NOT_FOUND", "订单不存在: " + orderId));
+    }
+
+    /**
+     * 根据订单号获取订单
+     */
+    @Transactional(readOnly = true)
+    public Order getOrderByNo(String orderNo) {
+        return orderRepository.findByOrderNo(Order.OrderNo.of(orderNo))
+                .orElseThrow(() -> new BusinessException("ORDER_NOT_FOUND", "订单不存在: " + orderNo));
+    }
+
+    /**
+     * 确认订单
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Order confirmOrder(String orderId) {
+        Order order = getOrder(orderId);
+        order.confirm();
+        orderRepository.save(order);
+        log.info("订单确认成功: {}", order.getOrderNo().getValue());
+        return order;
+    }
+
+    /**
+     * 取消订单
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Order cancelOrder(String orderId, String reason) {
+        Order order = getOrder(orderId);
+        order.cancel(reason);
+        orderRepository.save(order);
+        log.info("订单取消成功: {}", order.getOrderNo().getValue());
+        return order;
+    }
+
+    /**
+     * 发货
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Order shipOrder(String orderId, String trackingNo) {
+        Order order = getOrder(orderId);
+        order.ship(trackingNo);
+        orderRepository.save(order);
+        log.info("订单发货成功: {}, 运单号: {}", order.getOrderNo().getValue(), trackingNo);
+        return order;
+    }
+
+    /**
+     * 完成订单
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Order completeOrder(String orderId) {
+        Order order = getOrder(orderId);
+        order.complete();
+        orderRepository.save(order);
+        log.info("订单完成: {}", order.getOrderNo().getValue());
+        return order;
+    }
+
+    /**
+     * 获取客户订单列表
+     */
+    @Transactional(readOnly = true)
+    public PageResult<Order> getCustomerOrders(String customerId, int pageNum, int pageSize) {
+        return orderRepository.findByCustomerId(customerId, pageNum, pageSize);
+    }
+
+    /**
+     * 获取订单列表（按状态）
+     */
+    @Transactional(readOnly = true)
+    public PageResult<Order> getOrdersByStatus(String status, int pageNum, int pageSize) {
+        return orderRepository.findByStatus(Order.OrderStatus.of(status), pageNum, pageSize);
     }
 }

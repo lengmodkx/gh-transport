@@ -3,20 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.ghtransport</groupId>
-        <artifactId>gh-transport-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
-
+    <groupId>com.ghtransport</groupId>
     <artifactId>gh-transport-dispatch</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>GH Transport Dispatch Context</name>
-
+    <name>GH Transport Dispatch</name>
+    <description>调度限界上下文</description>
     <modules>
         <module>dispatch-domain</module>
         <module>dispatch-application</module>
         <module>dispatch-infrastructure</module>
         <module>dispatch-interfaces</module>
     </modules>
+    <dependencies>
+        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+        <dependency><groupId>com.ghtransport</groupId><artifactId>gh-transport-common-ddd</artifactId></dependency>
+        <dependency><groupId>com.ghtransport</groupId><artifactId>gh-transport-common-web</artifactId></dependency>
+        <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><scope>provided</scope></dependency>
+    </dependencies>
 </project>

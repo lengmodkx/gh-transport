@@ -1,0 +1,13 @@
+server:
+  port: 8086
+spring:
+  application:
+    name: gh-transport-transport
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/gh_transport}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:dev}

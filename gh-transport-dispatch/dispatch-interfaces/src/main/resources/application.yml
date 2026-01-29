@@ -1,0 +1,10 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: gh-transport-dispatch
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:dev}

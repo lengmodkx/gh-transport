@@ -3,32 +3,31 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.ghtransport</groupId>
-        <artifactId>gh-transport-parent</artifactId>
+        <artifactId>gh-transport-order</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>gh-transport-order-infrastructure</artifactId>
     <name>GH Transport Order Infrastructure</name>
+    <description>订单基础设施层</description>
 
     <dependencies>
         <dependency>
             <groupId>com.ghtransport</groupId>
             <artifactId>gh-transport-order-application</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
+
 </project>

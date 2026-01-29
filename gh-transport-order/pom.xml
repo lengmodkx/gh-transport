@@ -3,15 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.ghtransport</groupId>
-        <artifactId>gh-transport-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
 
+    <groupId>com.ghtransport</groupId>
     <artifactId>gh-transport-order</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>GH Transport Order Context</name>
+    <name>GH Transport Order</name>
+    <description>订单限界上下文</description>
 
     <modules>
         <module>order-domain</module>
@@ -19,4 +17,33 @@
         <module>order-infrastructure</module>
         <module>order-interfaces</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ghtransport</groupId>
+            <artifactId>gh-transport-common-ddd</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ghtransport</groupId>
+            <artifactId>gh-transport-common-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ghtransport</groupId>
+            <artifactId>gh-transport-common-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>

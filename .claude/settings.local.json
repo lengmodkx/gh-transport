@@ -7,7 +7,13 @@
       "Bash(gh api:*)",
       "Bash(gh repo create:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(gh repo view:*)",
+      "mcp__lark-mcp__docx_builtin_import",
+      "Bash(git fetch origin)",
+      "mcp__lark-mcp__wiki_v2_space_getNode"
     ]
   }
 }

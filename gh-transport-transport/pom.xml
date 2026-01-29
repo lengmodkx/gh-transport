@@ -3,20 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.ghtransport</groupId>
-        <artifactId>gh-transport-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
-
+    <groupId>com.ghtransport</groupId>
     <artifactId>gh-transport-transport</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>GH Transport Transport Context</name>
-
+    <name>GH Transport Transport</name>
+    <description>运输限界上下文</description>
     <modules>
         <module>transport-domain</module>
         <module>transport-application</module>
         <module>transport-infrastructure</module>
         <module>transport-interfaces</module>
     </modules>
+    <dependencies>
+        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+        <dependency><groupId>com.ghtransport</groupId><artifactId>gh-transport-common-ddd</artifactId></dependency>
+        <dependency><groupId>com.ghtransport</groupId><artifactId>gh-transport-common-web</artifactId></dependency>
+        <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><scope>provided</scope></dependency>
+        <dependency><groupId>org.mongodb</groupId><artifactId>mongodb-driver-sync</artifactId></dependency>
+    </dependencies>
 </project>
